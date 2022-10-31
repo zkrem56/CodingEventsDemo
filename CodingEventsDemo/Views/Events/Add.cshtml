@@ -1,6 +1,14 @@
 ﻿<h1>Add Event</h1>
 
+@if (ViewBag.error == "ERROR")
+{
+    <h1>@ViewBag.error</h1>
+}
+
 <form method="post">
+    <h2>Name of Event</h2>
     <input name="name" type="text" />
+    <h2>Info of Event</h2>
+    <input name="info" type="text" />
     <input type="submit" value="Add Event" />
 </form>

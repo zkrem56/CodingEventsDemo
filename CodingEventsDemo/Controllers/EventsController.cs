@@ -31,7 +31,7 @@ namespace coding_events_practice.Controllers
 
         [HttpPost]
         [Route("Events/Add")]
-        public IActionResult NewEvent(string name, string info)
+        public IActionResult NewEvent(Event newEvent)
         {
             /*if (!Events.Contains(new Event(name)))
             {
@@ -42,7 +42,7 @@ namespace coding_events_practice.Controllers
                 ViewBag.error = "ERROR";
                 return Redirect("/Events/Add");
             }*/
-            EventData.Add(new Event(name, info));
+            EventData.Add(newEvent);
             
 
             return Redirect("/Events");
@@ -65,6 +65,29 @@ namespace coding_events_practice.Controllers
                 EventData.Remove(eventId);
             }
 
+            return Redirect("/Events");
+        }
+
+        //GET: /Events/Edit/Event id
+        [HttpGet]
+        [Route("/Events/Edit/{eventId}")]
+        public IActionResult Edit(int eventId)
+        {
+            Event editingEvent = EventData.GetById(eventId);
+            ViewBag.eventToEdit = editingEvent;
+
+            ViewBag.title = $"Edit Event {editingEvent.Name} (id={editingEvent.Id})";
+            return View();
+        }
+
+        //POST: /Events/Edit
+        [HttpPost]
+        [Route("/Events/Edit")]
+        public IActionResult SubmitEditEventForm(int eventId, string name, string description)
+        {
+            Event editingEvent = EventData.GetById(eventId);
+            editingEvent.Name = name;
+            editingEvent.Description = description;
             return Redirect("/Events");
         }
     }

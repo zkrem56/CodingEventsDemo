@@ -1,4 +1,7 @@
-﻿<h1>@ViewBag.title</h1>
+﻿@using CodingEventsDemo.ViewModels;
+@model AddEventViewModel;
+
+<h1>Add Event</h1>
 
 @if (ViewBag.error == "ERROR")
 {
@@ -6,9 +9,22 @@
 }
 
 <form method="post">
-    <h2>Name of Event</h2>
-    <input name="name" type="text" />
-    <h2>Info of Event</h2>
-    <input name="description" type="text" />
+    <div asp-controller="Events" asp-action="Add" class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" />
+        <span class="text-danger" asp-validation-for="Name"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <input asp-for="Description" />
+        <span class="text-danger" asp-validation-for="Description"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ContactEmail">Contact Email</label>
+        <input asp-for="ContactEmail" />
+        <span class="text-danger" asp-validation-for="ContactEmail"></span>
+    </div>
     <input type="submit" value="Add Event" />
 </form>

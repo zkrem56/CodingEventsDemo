@@ -1,10 +1,15 @@
-﻿<h1>Edit Event</h1>
+﻿@using CodingEventsDemo.Models;
+
+@model Event;
+<h1>Edit Event @Model.Name (id=@Model.Id)</h1>
 
 <form method="post" action="/Events/Edit">
     <h2>Name of Event</h2>
-    <input name="name" type="text" value="@ViewBag.eventToEdit.Name" />
+    <input name="name" type="text" value="@Model.Name" />
     <h2>Info of Event</h2>
-    <input name="description" type="text" value="@ViewBag.eventToEdit.Description"/>
-    <input type="hidden" value="@ViewBag.eventToEdit.Id" name="eventId" />
+    <input name="description" type="text" value="@Model.Description"/>
+    <h2>Contact Email</h2>
+    <input asp-for="ContactEmail" />
+    <input type="hidden" value="@Model.Id" name="eventId" />
     <input type="submit" value="Edit Event" />
 </form>

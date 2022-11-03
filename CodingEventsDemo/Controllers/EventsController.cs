@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CodingEventsDemo.Data;
 using CodingEventsDemo.Models;
+using CodingEventsDemo.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -19,19 +20,22 @@ namespace coding_events_practice.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            ViewBag.events = EventData.GetAll();
+            List<Event> events = new List<Event>(EventData.GetAll());
 
-            return View();
+            return View(events);
         }
 
         public IActionResult Add()
         {
-            return View();
+            AddEventViewModel addEventViewModel = new AddEventViewModel();
+
+            return View(addEventViewModel);
         }
 
+        // POST: /Events/Add
+        // Will create/add a new Event
         [HttpPost]
-        [Route("Events/Add")]
-        public IActionResult NewEvent(Event newEvent)
+        public IActionResult Add(AddEventViewModel addEventViewModel)
         {
             /*if (!Events.Contains(new Event(name)))
             {
@@ -42,18 +46,30 @@ namespace coding_events_practice.Controllers
                 ViewBag.error = "ERROR";
                 return Redirect("/Events/Add");
             }*/
-            EventData.Add(newEvent);
+            if (ModelState.IsValid)
+            {
+                Event newEvent = new Event
+                {
+                    Name = addEventViewModel.Name,
+                    Description = addEventViewModel.Description,
+                    ContactEmail = addEventViewModel.ContactEmail
+                };
+
+                EventData.Add(newEvent);
             
 
-            return Redirect("/Events");
+                return Redirect("/Events");
+            }
+
+            return View(addEventViewModel);
         }
 
         // GET: /Events/Delete
         [HttpGet]
         public IActionResult Delete()
         {
-            ViewBag.events = EventData.GetAll();
-            return View();
+            List<Event> events = new List<Event>(EventData.GetAll());
+            return View(events);
         }
 
         // POST: /Events/Delete
@@ -77,7 +93,7 @@ namespace coding_events_practice.Controllers
             ViewBag.eventToEdit = editingEvent;
 
             ViewBag.title = $"Edit Event {editingEvent.Name} (id={editingEvent.Id})";
-            return View();
+            return View(editingEvent);
         }
 
         //POST: /Events/Edit
